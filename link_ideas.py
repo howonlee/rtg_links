@@ -1,7 +1,6 @@
-import networkx as nx
 import random
 
-def rtg_ie(num_words = 10, k=10, q=0.1):
+def write_rtg_ie(num_words=1000, k=10, q=0.1):
     """
     RTG with Independent Equiprobable Keys
     @param num_words: number of words the monkey should type
@@ -24,5 +23,8 @@ def rtg_ie(num_words = 10, k=10, q=0.1):
         words.append(",".join(map(str, curr_word)))
     return words
 
+def words_to_graph(words):
+    pass
+
 if __name__ == "__main__":
-    rtg_ie()
+    words = write_rtg_ie()
