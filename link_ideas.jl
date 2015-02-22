@@ -32,6 +32,7 @@ function write_rtg_ie(num_words=1000, k=5, q=0.1)
 end
 
 function write_rtg_iu(num_words=1000, k=5, q=0.1, ps=[0.03,0.05,0.1,0.22,0.3])
+  ##
 end
 
 println(write_rtg_ie())
