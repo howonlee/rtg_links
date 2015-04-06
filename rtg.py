@@ -89,14 +89,10 @@ def rtg_iu(k, qs, p, W):
 
 def create_qmat(qs, p):
     qs.append(p)
-    qs = np.atleast_2d(np.array(qs))
-    qs = qs * qs.T
-    qs_norm = np.copy(qs)
-    for x in xrange(qs.shape[1]):
-        qs_norm[:, x] = qs_norm[:, x] / np.linalg.norm(qs_norm[:, x])
-    len_qmat = qs_norm.shape[1] - 1 #the index of qmat that indicates space
-    print qs_norm
-    return qs_norm, len_qmat
+    qs = np.array(qs)
+    qs = np.atleast_2d(qs / sum(qs))
+    qmat = qs * qs.T
+    return qmat, qs.shape[0]-1
 
 def q_gen(k_set, qmat_cum):
     """
@@ -106,16 +102,16 @@ def q_gen(k_set, qmat_cum):
     l1, l2 = "", ""
     l1_term, l2_term = False, False
     while ((not l1_term) or (not l2_term)):
-        rand1 = random.random()
-        rand2 = random.random()
-        #stuff stuff stuff
+        rand = random.random() #only one random number because
+        #we're selecting from ravelled matrix
     return l1, l2
 
 def rtg(k, qs, p, W, beta):
     k_set = map(str, range(k))
     qmat, len_qmat = create_qmat(qs, p)
     qmat = adjust_matrix_homophily(qmat, beta)
-    print qmat[0, :].sum()
+    qmat_cum = np.cumsum(qmat.ravel())
+    print qmat_cum
     pass
 
 if __name__ == "__main__":
