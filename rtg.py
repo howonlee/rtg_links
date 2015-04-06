@@ -69,7 +69,6 @@ def adjust_matrix_homophily(mat, beta):
     #assumes a square matrix
     #also assumes 0 < beta < 1
     mat_shape = mat.shape
-    print mat_shape
     for x in xrange(mat_shape[0]):
         row_sum = 0
         for y in xrange(mat_shape[1]):
@@ -101,9 +100,27 @@ def q_gen(k_set, qmat_cum):
     """
     l1, l2 = "", ""
     l1_term, l2_term = False, False
-    while ((not l1_term) or (not l2_term)):
+    k_len = len(k_set)
+    while ((not l1_term) or (not l2_term)): #I may regret this one
         rand = random.random() #only one random number because
-        #we're selecting from ravelled matrix
+        idx = np.searchsorted(qmat_cum, rand)
+        i, j = idx // (k_len + 1), idx % (k_len + 1)
+        if i < k_len and j < k_len:
+            if not l1_term:
+                l1 = l1 + k_set[i] + ","
+            if not l2_term:
+                l2 = l2 + k_set[j] + ","
+        elif i < k_len and j == k_len:
+            if not l1_term:
+                l1 = l1 + k_set[i] + ","
+            l2_term = True
+        elif i == k_len and j < k_len:
+            if not l2_term:
+                l2 = l2 + k_set[j] + ","
+            l1_term = True
+        else:
+            l1_term = True
+            l2_term = True
     return l1, l2
 
 def rtg(k, qs, p, W, beta):
@@ -111,9 +128,9 @@ def rtg(k, qs, p, W, beta):
     qmat, len_qmat = create_qmat(qs, p)
     qmat = adjust_matrix_homophily(qmat, beta)
     qmat_cum = np.cumsum(qmat.ravel())
-    print qmat_cum
-    pass
+    return [q_gen(k_set, qmat_cum) for word in xrange(W)]
 
 if __name__ == "__main__":
-    words = rtg(10, range(2,12), 0.5, 1000, 0.9)
-    #print words_to_graph(words)
+    words = rtg(10, range(2,12), 0.9, 10000, 0.9)
+    #print words
+    print words_to_graph(words)
