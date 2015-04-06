@@ -131,6 +131,7 @@ def rtg(k, qs, p, W, beta):
     return [q_gen(k_set, qmat_cum) for word in xrange(W)]
 
 if __name__ == "__main__":
-    words = rtg(10, range(2,12), 0.9, 10000, 0.9)
-    #print words
-    print words_to_graph(words)
+    words = rtg(5, [0.03,0.05,0.1,0.22,0.3], 0.16, 1000000, 0.4)
+    gen_net = words_to_graph(words)
+    for first, second in gen_net:
+        print "%s %s" % (first, second)
