@@ -41,6 +41,15 @@ def rtg_ie(k, p, W):
     words = [ie_gen_word(k_set, p) for word in xrange(W)]
     return words
 
+def weighted_choice(choices, ps):
+    total = 0
+    cum_ps = []
+    for p in ps:
+        total += w
+        cum_ps.append(total)
+    x = random() * total
+    return values[bisect.bisect(cum_ps, x)]
+
 
 def iu_gen_word(k_set, qs, p):
     pass
