@@ -91,22 +91,26 @@ def create_qmat(qs, p):
     qs.append(p)
     qs_norm = np.atleast_2d(np.array(qs) / np.linalg.norm(np.array(qs)))
     len_qmat = qs_norm.shape[1] - 1 #the index of qmat that indicates space
-    q_mat = qs_norm * qs_norm.T
+    q_mat = qs_norm * qs_norm.T #maybe un-normalized now? I don't know
     return q_mat
 
 def q_gen(k_set, qmat):
     """
     Corresponds to SelectNodeLabels in the RTG paper
+    I think he was supposed
     """
     l1, l2 = "", ""
     l1_term, l2_term = False, False
     while ((not l1_term) and (not l2_term)):
-        rand = random.random()
+        rand1 = random.random()
+        rand2 = random.random()
         #stuff stuff stuff
+    return l1, l2
 
 def rtg(k, qs, p, W, beta):
     k_set = map(str, range(k))
     qmat = create_qmat(qs, p)
+    qmat = adjust_matrix_homophily(qmat, beta)
     pass
 
 if __name__ == "__main__":
