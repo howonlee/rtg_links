@@ -89,19 +89,23 @@ def rtg_iu(k, qs, p, W):
 
 def create_qmat(qs, p):
     qs.append(p)
-    qs_norm = np.atleast_2d(np.array(qs) / np.linalg.norm(np.array(qs)))
+    qs = np.atleast_2d(np.array(qs))
+    qs = qs * qs.T
+    qs_norm = np.copy(qs)
+    for x in xrange(qs.shape[1]):
+        qs_norm[:, x] = qs_norm[:, x] / np.linalg.norm(qs_norm[:, x])
     len_qmat = qs_norm.shape[1] - 1 #the index of qmat that indicates space
-    q_mat = qs_norm * qs_norm.T #maybe un-normalized now? I don't know
-    return q_mat
+    print qs_norm
+    return qs_norm, len_qmat
 
-def q_gen(k_set, qmat):
+def q_gen(k_set, qmat_cum):
     """
     Corresponds to SelectNodeLabels in the RTG paper
-    I think he was supposed
+    qmat_cum is a cumulative sum thing
     """
     l1, l2 = "", ""
     l1_term, l2_term = False, False
-    while ((not l1_term) and (not l2_term)):
+    while ((not l1_term) or (not l2_term)):
         rand1 = random.random()
         rand2 = random.random()
         #stuff stuff stuff
@@ -109,8 +113,9 @@ def q_gen(k_set, qmat):
 
 def rtg(k, qs, p, W, beta):
     k_set = map(str, range(k))
-    qmat = create_qmat(qs, p)
+    qmat, len_qmat = create_qmat(qs, p)
     qmat = adjust_matrix_homophily(qmat, beta)
+    print qmat[0, :].sum()
     pass
 
 if __name__ == "__main__":
