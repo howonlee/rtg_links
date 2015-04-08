@@ -132,6 +132,9 @@ def rtg(k, qs, p, W, beta):
 
 if __name__ == "__main__":
     words = rtg(5, [0.03,0.05,0.1,0.22,0.3], 0.16, 1000000, 0.4)
-    gen_net = words_to_graph(words)
-    for first, second in gen_net:
-        print "%s %s" % (first, second)
+    words = [single_word for tup in words for single_word in tup]
+    with open("rtg_corpus.txt", "w") as rtg_file:
+        rtg_file.write(" ".join(words))
+    #gen_net = words_to_graph(words)
+    #for first, second in gen_net:
+    #    print "%s %s" % (first, second)
